@@ -1,0 +1,23 @@
+{
+  "elasticsearch_host": "https://elastic:Z9ItKLoSiYwmuoTADTPFT0Za@7eefd0a2183b45c59bba09bcce8f83f4.us-west1.gcp.cloud.es.io:9243",
+  "mongodb_uri": "mongodb://gonitely-home-finder:Hy2ODdXl7rXM9LMw@gonitelyproductionmongodbcluster-shard-00-00-g8npq.gcp.mongodb.net:27017,gonitelyproductionmongodbcluster-shard-00-01-g8npq.gcp.mongodb.net:27017,gonitelyproductionmongodbcluster-shard-00-02-g8npq.gcp.mongodb.net:27017/home-finder?ssl=true&replicaSet=GonitelyProductionMongoDBCluster-shard-0&authSource=admin&retryWrites=true",
+  "airdna": {
+    "access_token": "fe6e01a3074542c6abe8669fcf0559e4"
+  },
+  "zillow": {
+    "access_token": "X1-ZWz1gnyubyh5or_29gz1"
+  },
+  "eliotandme": {
+    "access_token": "1472D2FF"
+  },
+  "attom": {
+    "access_token": "bef4b4c445e49f42d3554188618e5a76"
+  },
+  "proxy": "35.230.125.211:24000",
+  "rabbitmq": {
+    "uri": "amqp://ykfryira:nQ7Yl8J-j56hTEjW91WJHKdv9dBQHf2Q@porpoise.rmq.cloudamqp.com/ykfryira",
+    "exchange": "homefinder",
+    "exchange_type": "direct",
+    "queue_properties_worker": "homefinder.properties.worker"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "elasticsearch_host": "http://elasticsearch:9200",
+  "mongodb_uri": "mongodb://mongodb:27017/home-finder",
+  "airdna": {
+    "access_token": "fe6e01a3074542c6abe8669fcf0559e4"
+  },
+  "zillow": {
+    "access_token": "X1-ZWz1gnyubyh5or_29gz1"
+  },
+  "eliotandme": {
+    "access_token": "1472D2FF"
+  },
+  "attom": {
+    "access_token": "bef4b4c445e49f42d3554188618e5a76"
+  },
+  "proxy": "35.230.125.211:24000",
+  "rabbitmq": {
+    "uri": "amqp://rabbit:rabbit@rabbitmq",
+    "exchange": "homefinder",
+    "exchange_type": "direct",
+    "queue_properties_worker": "homefinder.properties.worker"
+  }
+}

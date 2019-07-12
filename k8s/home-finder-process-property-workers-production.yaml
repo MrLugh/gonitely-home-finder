@@ -1,0 +1,41 @@
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "gonitely-home-finder-property-worker-config"
+  namespace: "production"
+  labels:
+    app: "gonitely-home-finder-property-worker"
+data:
+  NODE_ENV: "production"
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "gonitely-home-finder-property-worker"
+  namespace: "production"
+  labels:
+    app: "gonitely-home-finder-property-worker"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "gonitely-home-finder-property-worker"
+  template:
+    metadata:
+      labels:
+        app: "gonitely-home-finder-property-worker"
+    spec:
+      containers:
+      - name: "gonitely-home-finder-property-worker"
+        image: "gcr.io/gonitely-203718/gonitely-home-finder-workers:latest"
+        env:
+        - name: "POD_NAME"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: "NODE_ENV"
+          valueFrom:
+            configMapKeyRef:
+              key: "NODE_ENV"
+              name: "gonitely-home-finder-config"

@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gonitely-home-finder-ingress
+  namespace: production
+  annotations:
+    certmanager.k8s.io/issuer: letsencrypt-production
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+    - homefinder.gonitely.com
+    secretName: home-finder-production-tls
+  rules:
+  - host: homefinder.gonitely.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gonitely-home-finder-service
+          servicePort: 80

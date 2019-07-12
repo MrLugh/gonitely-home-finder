@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+
+  home-finder-api:
+    image: "node:8"
+    container_name: home-finder-api
+    user: "node"
+    working_dir: /usr/src/app
+    environment:
+      - NODE_ENV=dev
+    expose:
+      - 3000
+    ports:
+      - "8090:3000"
+    volumes:
+      - ./:/usr/src/app
+    command: "npm start"
+    networks:
+      - home-finder
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    container_name: home-finder-elasticsearch
+    environment:
+      - "discovery.type=single-node"
+      #- "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - home-finder
+
+  mongodb:
+    image: mongo:latest
+    container_name: "home-finder-mongodb"
+    environment:
+      - "MONGODB_USER=user" 
+      - "MONGODB_PASS=pass"
+      - "MONGO_DATA_DIR=/data/db"
+      - "MONGO_LOG_DIR=/dev/null"
+    volumes:
+      - mongodb-data:/data/db
+      - /tmp/backup:/tmp/backup
+    ports:
+        - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null
+    networks:
+      - home-finder
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: home-finder-rabbitmq
+    environment:
+      - "RABBITMQ_DEFAULT_USER=rabbit"
+      - "RABBITMQ_DEFAULT_PASS=rabbit"
+      - "RABBITMQ_NODENAME=node@rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - home-finder
+
+networks:
+  home-finder:
+    driver: "bridge"
+
+volumes:
+  elasticsearch-data:
+    driver: "local"
+  mongodb-data:
+    driver: "local"
+  rabbitmq-data:
+    driver: "local"

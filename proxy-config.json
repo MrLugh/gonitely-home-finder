@@ -1,0 +1,29 @@
+{
+  "_defaults": {
+    "customer": "hl_a64b1de0",
+    "password": "ybbfa7tbvoqu",
+    "token": "tnI71ngv6GNCXt+kc1Aus5qNqoB2Mf9haTP2UNCntvrYjXsMFPgcAZYkVwTuj7NWtJONwMLktFPNvdYtBnvESQKYobKyTjE62FzPz3YddXvZyLbWYYUFMjBFGyjqm6B7L1OGHI+7ENnXqs0ZIUBuLXfntPgkKQzL2wqH6h9m5zBUdPp7",
+    "whitelist_ips": [
+      "181.92.151.49",
+      "190.246.254.176",
+      "35.230.125.211"
+    ],
+    "www_whitelist_ips": [
+      "181.92.151.49",
+      "190.246.254.176"
+    ]
+  },
+  "proxies": [
+    {
+      "keep_alive": 45,
+      "last_preset_applied": "round_robin",
+      "max_requests": 1,
+      "password": "7fe8f93vkk07",
+      "pool_size": 1,
+      "pool_type": "round-robin",
+      "port": 24000,
+      "session": true,
+      "zone": "homefinderzone2"
+    }
+  ]
+}

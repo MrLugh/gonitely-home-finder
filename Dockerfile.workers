@@ -1,0 +1,19 @@
+FROM node:8
+
+COPY . /usr/src/app
+
+WORKDIR /usr/src/app
+
+RUN npm install --production
+RUN npm install typescript
+RUN npm run build-ts
+
+RUN apt-get update && apt-get install -y supervisor && apt-get clean
+RUN mkdir -p /var/log/supervisor
+
+COPY deploy/workers/supervisor/conf.d /etc/supervisor/conf.d
+COPY deploy/workers/supervisor/templates/supervisord.conf /etc/supervisor/supervisord.conf
+
+EXPOSE 9001
+
+CMD ["/usr/bin/supervisord"]

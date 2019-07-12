@@ -1,0 +1,106 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: gonitely-home-finder-service
+  namespace: "production"
+spec:
+  selector:
+    app: gonitely-home-finder
+  ports:
+  - name: 80-to-3000-tcp
+    protocol: TCP
+    port: 80
+    targetPort: 3000
+  - name: 8080-to-3001-tcp
+    protocol: TCP
+    port: 8080
+    targetPort: 3001
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "gonitely-home-finder-config"
+  namespace: "production"
+  labels:
+    app: "gonitely-home-finder"
+data:
+  GONITELY_HOME_FINDER_API_PORT: "3001"
+  GONITELY_HOME_FINDER_UI_APP_PORT: "3000"
+  NODE_ENV: "production"
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "gonitely-home-finder"
+  namespace: "production"
+  labels:
+    app: "gonitely-home-finder"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "gonitely-home-finder"
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "gonitely-home-finder"
+    spec:
+      containers:
+      - name: "gonitely-home-finder-api"
+        image: "gcr.io/gonitely-203718/gonitely-home-finder-api:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 3001
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        env:
+        - name: "POD_NAME"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: "APP_PORT"
+          valueFrom:
+            configMapKeyRef:
+              key: "GONITELY_HOME_FINDER_API_PORT"
+              name: "gonitely-home-finder-config"
+        - name: "NODE_ENV"
+          valueFrom:
+            configMapKeyRef:
+              key: "NODE_ENV"
+              name: "gonitely-home-finder-config"
+      - name: "gonitely-home-finder-ui"
+        image: "gcr.io/gonitely-203718/gonitely-home-finder-ui:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: "POD_NAME"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: "NODE_ENV"
+          valueFrom:
+            configMapKeyRef:
+              key: "NODE_ENV"
+              name: "gonitely-home-finder-config"
+        - name: "APP_PORT"
+          valueFrom:
+            configMapKeyRef:
+              key: "GONITELY_HOME_FINDER_UI_APP_PORT"
+              name: "gonitely-home-finder-config"
