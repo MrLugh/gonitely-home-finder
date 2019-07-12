@@ -1,0 +1,6 @@
+.idea
+.vscode
+config/dev.json
+dist
+gonitely-home-finder.log
+node_modules
